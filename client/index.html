@@ -7,6 +7,8 @@
 
     <!-- dependencies -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
+   <script src="bower_components/underscore/underscore.js"></script>
+   <script src="scripts/interactions.js"></script>
     <script>
       // YOU DO NOT NEED TO EDIT THIS CODE
       if (!/(&|\?)username=/.test(window.location.search)) {
@@ -17,6 +19,8 @@
         newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
         window.location.search = newSearch;
       }
+
+
     </script>
     <!-- your scripts -->
     <script src="env/config.js"></script>
@@ -25,8 +29,27 @@
   <body>
     <div id="main">
       <h1>chatterbox</h1>
-      <!-- Your HTML goes here! -->
+        <!-- Your HTML goes here! -->
+<form action="/action_page.php">
+  <select name="roomSelect" >
+  </select>
+  <br><br>
+  <input type="submit">
+</form>
+     <form>
+     <textarea>Some text...</textarea>
+   </form>
+<input class="dropbtn inputBtn" type="button" value="Enter">
+<input class="dropbtn clearBtn" type="button" value="Clear Messages">
+  </div>
     </div>
-    <div id="chats"></div>
+    <div id="chats">
+
+
+      <!-- <div class="username">
+      </div> -->
+    </div>
+
+
   </body>
 </html>
