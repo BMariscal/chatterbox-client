@@ -11,7 +11,7 @@
    <script src="scripts/interactions.js"></script>
     <script>
       // YOU DO NOT NEED TO EDIT THIS CODE
-      
+   var roomname;
       if (!/(&|\?)username=/.test(window.location.search)) {
         var newSearch = window.location.search;
         if (newSearch !== '' & newSearch !== '?') {
@@ -21,7 +21,11 @@
         window.location.search = newSearch;
 
       }
-      
+    function run() {
+      console.log("run");
+      roomname = $("[name='roomSelect']").val();
+      app.changeRoom(roomname);
+      }
 
 
     </script>
@@ -34,10 +38,10 @@
       <h1>chatterbox</h1>
         <!-- Your HTML goes here! -->
 <form >
-  <select name="roomSelect" >
+  <select  name="roomSelect" onchange="run()">
+  <option value=allrooms>Pick room</option>
   </select>
   <br><br>
-<input class="dropbtn clearBtn roomSubmit" type="button" value="Select Room">
 </form>
      <form>
      <textarea id="message">Some text...</textarea>
