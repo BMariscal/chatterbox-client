@@ -1,5 +1,6 @@
 body {
     background: #eee;
+    background-image: url('https://avatars1.githubusercontent.com/u/99825?s=460&v=4');
     text-align: center;
     padding: 0 25px;
     font-family: arial, sans-serif;
@@ -84,8 +85,9 @@ form input[type=text] {
 }
 
 .friend {
-    color: #fff;
-    background-color: #0090da;
+    color: #000;
+   font-weight: bold;
+    background-color: white;
 }
 
 .dropbtn {
@@ -141,4 +143,24 @@ textarea {
     background-color: #f8f8f8;
     font-size: 16px;
     resize: none;
+}
+
+
+.friend .message .text{
+   font-weight: bold;
+   background-color: white;
+}
+
+.room {
+    font-size: 10px;
+}
+
+
+
+.showRoom{
+display: block;
+}
+
+.hideRoom{
+ display: none;
 }

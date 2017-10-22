@@ -2,16 +2,20 @@
 //http://parse.sfm6.hackreactor.com/chatterbox/classes/messages
 
 var app = {};
+app.currentDataLength = 0;
+app.data;
+app.lastMessageId;
+app.rooms = [];
 app.send = function(message) {
   $.ajax({
   // This is the url you should use to communicate with the parse API server.
-    url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
     type: 'POST',
+    url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
     data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
-      console.log(data);
       console.log('chatterbox: Message sent');
+     
     },
     error: function (data) {
     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -21,62 +25,95 @@ app.send = function(message) {
 };
 
 app.init = function() {
-  app.renderRoom('test');
+  
   app.fetch('http://parse.sfm6.hackreactor.com/chatterbox/classes/messages');
-  //app.scheduleRender();
+
+  setInterval(function() {
+    app.fetch('http://parse.sfm6.hackreactor.com/chatterbox/classes/messages');
+  }, 1000);
 };
 
 app.fetch = function(url) {
+  var chatData;
   url = url || undefined;
-  $.get(url, function( data ) {
-    let chatData = data.results;
-    chatData.forEach(function(item) {
-    //  = $( 'div.message').append(`<div>${item.text} </br> </div><div class="username">${item.username}</div>` );
-      var message = $('<div class="message"></div>');
-      var text = $(`<div class="text">${item.text}</div>`);
-      var username = $(`<p class="username">${item.username}</p>`);
-      text.appendTo(message);
-      username.appendTo(message);
-      message.prependTo($('#chats'));
 
-    });
+  $.ajax({
+    type: 'GET',
+    url: url,
+    data: 'order=-createdAt',
+    success: function (data) {
+      app.data = data.results;
+      var mostRecentMessage = app.data[0];
+      if (mostRecentMessage.objectId !== app.lastMessageId) {
+              
+          app.renderMessage(app.data);
+
+      }
+      app.lastMessageId = app.data[0].objectId;
+
+    }
   });
 
 };
 
 app.clearMessages = function() {
-  $('div#chats').html('');
+  $('#chats').html('');
 };
 
-app.renderMessage = function(message) {
-  $('div#chats').append(`<div>${message} </div>`);
-  app.fetch('http://parse.sfm6.hackreactor.com/chatterbox/classes/messages');
-  // $.get('http://parse.sfm6.hackreactor.com/chatterbox/classes/messages', function( data ) {
-  //   $('div#chats').append(`<div>${data.results} </div>`);
-  
-  // });
+app.renderMessage = function(dataM) {
+  app.clearMessages();
+  // dataM = Array.from(dataM);
+ 
+  dataM.forEach(function(dataMessage) {
+    dataMessage.username = _.escape(dataMessage.username);   
+    dataMessage.text = _.escape(dataMessage.text);
+    dataMessage.roomname = _.escape(dataMessage.roomname);
+    if (!app.rooms.includes(dataMessage.roomname)) {
+      app.rooms.push(dataMessage.roomname);
+      $('select').append(`<option value=${dataMessage.roomname}>${dataMessage.roomname}</option>`);
+    }
+
+    var room = $(`<div class="room ${dataMessage.roomname}">Room: ${dataMessage.roomname}</div>`);
+    var message = $(`<div class="message ${dataMessage.username}"></div>`);
+    var text = $(`<div class="text">${dataMessage.text}</div>`);
+    var username = $(`<button class="username" onclick="app.handleUsernameClick(this)">${dataMessage.username}</button>`);
+    room.appendTo(message);
+    text.appendTo(message);
+    username.appendTo(message);
+    message.appendTo($('#chats'));
+  });
 };
 
-app.renderRoom = function(roomName) {
-  $('select').append(`<option value=${roomName}>${roomName}</option>`);
+app.renderRoom = function(array) {
+  for (let i = 0; i < array.length; i++) {
+    $('select').append(`<option value=${array[i]}>${array[i]}</option>`);
+  }
+
 };
+//LOOK AT ME!
+// app.changeRoom = function(roomname) {
+//   console.log("inside changeRoom", roomname);
+//   $('.message').toggleClass('.hideRoom');
+//   $('.' + roomname).toggleClass('.showRoom');
 
-app.handleUsernameClick = function() {
-  
-};
-// $('.message').on('click', function() {
-//   console.log('I am running!');
-// });
-
-
-
-
-// app.scheduleRender = function() {
-//   app.renderMessage();
-//   setTimeout(app.scheduleRender, 4000);
 // };
 
+app.handleUsernameClick = function(username) {
+  var theUser = $(username).html().split(' ')[0];
+  $('.' + theUser).toggleClass('friend');
+    
+};  
+  
+
+
+app.handleSubmit = function(event, message) {
+  app.send(message);
+  event.preventDefault();
+  app.fetch('http://parse.sfm6.hackreactor.com/chatterbox/classes/messages');
+};
+
 app.init();
+
 
 
 

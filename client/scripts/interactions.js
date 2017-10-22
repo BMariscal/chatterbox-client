@@ -1,22 +1,27 @@
  $(document).ready(function() {
    console.log( 'ready!');
    $('.username').on('click', function() {
-     console.log('I am running!');
+     console.log('I am running, i am button!');
    });   
-   $('.message').on('click', function() {
-     console.log('I am running!');
-   });
+//LOOK AT ME!
+   // $('.roomSubmit').on('click', function() {
+   //   console.log("inside ROOM SUBMIT");
+   //   var roomname = window.location.search.split('&')[0].split('=')[1];
+   //   app.changeRoom(roomname);
+   // });
 
    $('.clearBtn').on('click', function() {
-     console.log('I am running!');
      app.clearMessages();
    });
 
-   $('.inputBtn').on('click', function() {
-     var value = $('textarea').val();
-     var message = {username: 'Kaylin', text: value, roomname: 'testing'};
-     app.send(message);
+   $('#send.submit').on('click', function(event) {
+     var username = window.location.search.split('&')[1].split('=')[1];
+     var roomname = window.location.search.split('&')[0].split('=')[1];
+
+     var value = $('#message').val();
+     console.log(this.username);
+     var message = {username: username, text: value, roomname: roomname};
+     app.handleSubmit(event, message);
      $('textarea').val('');
    });
-
- });   
+ });
