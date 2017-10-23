@@ -61,7 +61,7 @@ app.renderMessage = function(dataM) {
     dataMessage.roomname = _.escape(dataMessage.roomname);
     if (!app.rooms.includes(dataMessage.roomname)) {
       app.rooms.push(dataMessage.roomname);
-      $('select').append(`<option value=${dataMessage.roomname}>${dataMessage.roomname}</option>`);
+      $('select').append(`<option value="${dataMessage.roomname}">${dataMessage.roomname}</option>`);
     }
     var room = $(`<div class="room ${dataMessage.roomname}"> Room: ${dataMessage.roomname}</div>`);
     var message = $(`<div class="message ${dataMessage.username} ${dataMessage.roomname}"></div>`);
@@ -84,14 +84,21 @@ app.renderRoom = function(array) {
 
 app.changeRoom = function(roomname) {
   app.roomname= roomname;
-  // console.log(roomname)
-  // console.log(app.roomname)
+  if(roomname.includes(' ')){
+     roomnameFirst= roomname.split(' ')[0];
+     roomnameSecond = roomname.split(' ')[1];
+  }
+
   if(!roomname || roomname === "allrooms"){
     $('.message').removeClass('hideRoom');
     $('.message').addClass('showRoom');
+  }else if(roomname.includes(' ')){
+    $('.message').addClass('hideRoom');
+    $('.message' + '.'+ roomnameFirst + '.' + roomnameSecond).removeClass('hideRoom');
   }else{
-  $('.message').addClass('hideRoom');
-  $('.message' + '.'+ roomname).removeClass('hideRoom');
+    $('.message').addClass('hideRoom');
+    $('.message' + '.'+ roomname).removeClass('hideRoom');
+    $('.message' + '.'+ roomnameFirst + '.' + roomnameSecond).addClass('hideRoom');
   }
 };
 
