@@ -91,12 +91,16 @@ form input[type=text] {
 }
 
 .dropbtn {
+    border-radius: 2px;
     background-color: #4CAF50;
     color: white;
     padding: 16px;
     font-size: 16px;
     border: none;
     cursor: pointer;
+}
+.dropbtn:hover{
+    background-color: #3c8c40;
 }
 
 .dropdown {
@@ -129,9 +133,19 @@ form input[type=text] {
 .dropdown:hover .dropbtn {
     background-color: #3e8e41;
 }
+.roomName{
+    margin-left:20px;
+}
 
 .message {
-    border: 1px solid red;
+    margin-left: 20px;
+    border: 0.5px solid #dbdbdb;
+    -webkit-box-shadow: 0 5px 6px -6px #777;
+       -moz-box-shadow: 0 5px 6px -6px #777;
+            box-shadow: 10 5px 6px -6px #777;
+    margin-bottom:10px;
+    height: 100px;
+    overflow-wrap: break-word;
 }
 textarea {
     width: 500px;
@@ -150,13 +164,28 @@ textarea {
    font-weight: bold;
    background-color: white;
 }
-
-.room {
-    font-size: 10px;
+div.text{
+    margin-top:10px;
+    margin-left: 20px;
 }
 
+div.room{
+ margin-left: 20px;
+}
 
+button.username{
+margin-left: 20px;
+  border:none;
+  color: #696969;
+  font-size: 15px;
+  background-color: #fff;
+}
+button:focus {outline:0;}
 
+button.username:hover{
+  color: green;
+  text-decoration: underline;
+}
 .showRoom{
 display: block;
 

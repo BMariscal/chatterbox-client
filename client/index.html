@@ -22,11 +22,9 @@
 
       }
     function run() {
-      console.log("run");
       roomname = $("[name='roomSelect']").val();
       app.changeRoom(roomname);
       }
-
 
     </script>
     <!-- your scripts -->
@@ -41,10 +39,12 @@
   <select  name="roomSelect" onchange="run()">
   <option value=allrooms>Pick room</option>
   </select>
+  <input id="newRoomInput" type="text" style="width: 120px; height: 10px;" placeholder="Enter new room">
+  <input class="dropbtn inputBtn submit" id="createRoom" type="button" value="Enter">
   <br><br>
 </form>
      <form>
-     <textarea id="message">Some text...</textarea>
+     <textarea id="message" placeholder="Some text..."></textarea>
    </form>
 <input class="dropbtn inputBtn submit" id="send" type="button" value="Enter">
 <input class="dropbtn clearBtn" type="button" value="Clear Messages">

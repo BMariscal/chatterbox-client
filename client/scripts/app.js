@@ -1,35 +1,32 @@
 
-//http://parse.sfm6.hackreactor.com/chatterbox/classes/messages
 
 var app = {};
 app.currentDataLength = 0;
+app.server = 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages';
 app.data;
 app.roomname;
 app.lastMessageId;
 app.rooms = [];
 app.send = function(message) {
   $.ajax({
-  // This is the url you should use to communicate with the parse API server.
     type: 'POST',
-    url: 'http://parse.sfm6.hackreactor.com/chatterbox/classes/messages',
+    url: app.server,
     data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message sent');
-
     },
     error: function (data) {
-    // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       console.error('chatterbox: Failed to send message', data);
     }
   });
 };
 
 app.init = function() {
-  app.fetch('http://parse.sfm6.hackreactor.com/chatterbox/classes/messages');
+  app.fetch(app.server);
 
   setInterval(function() {
-    app.fetch('http://parse.sfm6.hackreactor.com/chatterbox/classes/messages');
+    app.fetch(app.server);
   }, 1000);
 };
 
@@ -45,15 +42,11 @@ app.fetch = function(url) {
       app.data = data.results;
       var mostRecentMessage = app.data[0];
       if (mostRecentMessage.objectId !== app.lastMessageId) {
-
-          app.renderMessage(app.data, app.roomname);
-
+          app.renderMessage(app.data);
       }
       app.lastMessageId = app.data[0].objectId;
-
     }
   });
-
 };
 
 app.clearMessages = function() {
@@ -62,8 +55,6 @@ app.clearMessages = function() {
 
 app.renderMessage = function(dataM) {
   app.clearMessages();
-  // dataM = Array.from(dataM);
-
   dataM.forEach(function(dataMessage) {
     dataMessage.username = _.escape(dataMessage.username);
     dataMessage.text = _.escape(dataMessage.text);
@@ -72,7 +63,6 @@ app.renderMessage = function(dataM) {
       app.rooms.push(dataMessage.roomname);
       $('select').append(`<option value=${dataMessage.roomname}>${dataMessage.roomname}</option>`);
     }
-
     var room = $(`<div class="room ${dataMessage.roomname}"> Room: ${dataMessage.roomname}</div>`);
     var message = $(`<div class="message ${dataMessage.username} ${dataMessage.roomname}"></div>`);
     var text = $(`<div class="text">${dataMessage.text}</div>`);
@@ -87,16 +77,16 @@ app.renderMessage = function(dataM) {
 
 app.renderRoom = function(array) {
   for (let i = 0; i < array.length; i++) {
-    $('select').append(`<option value=${array[i]}>${array[i]}</option>`);
+    $('select').append(`<option value="${array[i]}">${array[i]}</option>`);
   }
 
 };
-//LOOK AT ME!
+
 app.changeRoom = function(roomname) {
-  app.roomname = roomname;
-  console.log("inside changeRoom", roomname);
+  app.roomname= roomname;
+  // console.log(roomname)
+  // console.log(app.roomname)
   if(!roomname || roomname === "allrooms"){
-    console.log("all rooms");
     $('.message').removeClass('hideRoom');
     $('.message').addClass('showRoom');
   }else{
@@ -111,12 +101,10 @@ app.handleUsernameClick = function(username) {
 
 };
 
-
-
 app.handleSubmit = function(event, message) {
   app.send(message);
   event.preventDefault();
-  app.fetch('http://parse.sfm6.hackreactor.com/chatterbox/classes/messages');
+  app.fetch(app.server);
 };
 
 app.init();
