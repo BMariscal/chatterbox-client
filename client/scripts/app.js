@@ -84,7 +84,7 @@ app.renderRoom = function(array) {
 
 app.changeRoom = function(roomname) {
   app.roomname= roomname;
-  if(roomname.includes(' ')){
+  if(roomname && roomname.includes(' ')){
      roomnameFirst= roomname.split(' ')[0];
      roomnameSecond = roomname.split(' ')[1];
   }
@@ -98,7 +98,7 @@ app.changeRoom = function(roomname) {
   }else{
     $('.message').addClass('hideRoom');
     $('.message' + '.'+ roomname).removeClass('hideRoom');
-    $('.message' + '.'+ roomnameFirst + '.' + roomnameSecond).addClass('hideRoom');
+    //$('.message' + '.'+ roomnameFirst + '.' + roomnameSecond).addClass('hideRoom');
   }
 };
 
